@@ -1,6 +1,6 @@
 # skill-master
 
-> Claude Code 精选 Skill 合集 — 整合实用自定义技能与开源工具，覆盖文档生成、科研计算、学术写作、视频渲染等场景。
+> Claude Code 精选 Skill 合集 — 整合实用自定义技能与开源工具，覆盖文档生成、科研计算、学术写作、卡片动效、视频渲染等场景。
 
 ---
 
@@ -16,7 +16,8 @@ skill-master 是一个 Claude Code 技能仓库，汇集高质量的自定义 Sk
 |---------|------|------|-------|------|
 | [agent-skill-creator](#agent-skill-creator) | v6.0.0 | Francy Lisboa Charuto | MIT | 从工作流描述创建跨平台 Agent 技能 |
 | [github-readme-writer-skill](#github-readme-writer-skill) | v1.0.0 | guyue356 | MIT | 中文 GitHub README 智能生成器 |
-| [repo-manager-skill](#repo-manager-skill) | v1.0.0 | guyue356 | MIT | 仓库技能管理与README自动更新 |
+| [repo-manager-skill](#repo-manager-skill) | v1.1.0 | guyue356 | MIT | 仓库技能管理与README自动更新 |
+| [card-dynamic-style-skill](#card-dynamic-style-skill) | v1.0.0 | guyue | MIT | 卡片灵感动效 — 3种风格选择 |
 | [research-writing-skill](#research-writing-skill) | v1.1.0 | guyue356 | MIT | 中文科研论文写作与润色 |
 
 ---
@@ -36,6 +37,22 @@ skill-master 是一个 Claude Code 技能仓库，汇集高质量的自定义 Sk
 - 团队技能注册表管理
 
 **触发词**：create agent for, automate workflow, create skill for, 需要自动化
+
+---
+
+### card-dynamic-style-skill
+
+**调用方式**：`/card-dynamic-style-skill`
+
+为卡片组件添加灵动感。提供 3 种动画风格：玻璃光扫（渐变边框+探照灯）、悬浮景深（强3D透视+阴影抬升）、液态脉冲（动态渐变+脉冲边框）。所有动画基于 GPU 加速的 transform/opacity，60fps 流畅运行，兼容 Tailwind CSS。
+
+**核心能力**：
+- 3 种卡片动画风格供选择（玻璃光扫 / 悬浮景深 / 液态脉冲）
+- 自动适配卡片结构和品牌配色
+- 性能优化：仅使用 transform + opacity（GPU 加速）
+- 支持 Tailwind CSS 和纯 CSS
+
+**触发词**：卡片动画, 灵动感, card animation, hover effect, glassmorphism, 3D tilt
 
 ---
 
@@ -75,10 +92,10 @@ skill-master 是一个 Claude Code 技能仓库，汇集高质量的自定义 Sk
 
 **调用方式**：`/repo-manager`
 
-管理和更新 skill-master 仓库中的技能集合。支持添加新技能、同步已安装技能、自动更新 README.md、管理工具与资源列表。
+管理和更新 skill-master 仓库中的技能集合。支持交互式选择添加新技能、同步已安装技能、自动更新 README.md、管理工具与资源列表。
 
 **核心能力**：
-- 从 ~/.claude/skills/ 添加技能到仓库
+- 扫描未入库技能，交互式选择添加到仓库
 - 双向同步已安装技能与仓库版本
 - 自动更新 README.md（总览表格、详情、项目结构）
 - 添加非标准开源项目到"工具与资源"板块
@@ -153,6 +170,7 @@ git clone <repo-url> ~/.codeium/windsurf/skills/skill-master
 ```
 /github-readme-writer                    # 生成项目 README
 /agent-skill-creator 每周我都要...        # 创建自动化技能
+/card-dynamic-style-skill 给卡片加动效    # 卡片灵感动效
 /repo-manager 添加新技能                  # 管理仓库技能
 帮我写一篇论文的摘要                       # 激活论文写作
 ```
@@ -163,25 +181,38 @@ git clone <repo-url> ~/.codeium/windsurf/skills/skill-master
 
 ```text
 skill-master/
-├── agent-skill-creator/          # Agent 技能创建器
-│   └── SKILL.md
-├── github-readme-writer-skill/   # 中文 README 生成器
+├── agent-skill-creator/          # Agent 技能创建器 (v6.0.0)
+│   ├── SKILL.md
+│   ├── scripts/                  # 验证、导出、安全扫描脚本
+│   ├── references/               # 架构指南、模板、跨平台文档
+│   ├── assets/                   # 演示素材
+│   ├── install.sh
+│   └── README.md
+├── card-dynamic-style-skill/     # 卡片灵感动效 (v1.0.0)
 │   ├── SKILL.md
 │   ├── AGENTS.md
 │   ├── references/
 │   ├── assets/
 │   ├── install.sh
 │   └── README.md
-├── repo-manager-skill/           # 仓库技能管理器
+├── github-readme-writer-skill/   # 中文 README 生成器 (v1.0.0)
+│   ├── SKILL.md
+│   ├── AGENTS.md
+│   ├── references/
+│   ├── assets/
+│   ├── install.sh
+│   └── README.md
+├── repo-manager-skill/           # 仓库技能管理器 (v1.1.0)
 │   ├── SKILL.md
 │   ├── AGENTS.md
 │   ├── references/
 │   ├── install.sh
 │   └── README.md
-├── research-writing-skill/       # 科研论文写作
+├── research-writing-skill/       # 科研论文写作 (v1.1.0)
 │   ├── SKILL.md
 │   ├── AGENTS.md
 │   ├── references/
+│   ├── agents/
 │   ├── install.sh
 │   └── README.md
 ├── LICENSE                       # MIT 许可证

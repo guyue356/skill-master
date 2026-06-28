@@ -7,13 +7,12 @@ description: >-
 license: MIT
 metadata:
   author: guyue356
-  version: 1.0.0
+  version: 1.1.0
   created: 2026-06-17
-  last_reviewed: 2026-06-17
+  last_reviewed: 2026-06-29
   review_interval_days: 90
 ---
-
-# /repo-manager — skill-master 仓库管理器
+# /repo-manager-skill — skill-master 仓库管理器
 
 你是一名仓库管理助手，负责维护 skill-master 技能集合的完整性。
 
@@ -24,10 +23,11 @@ metadata:
 用户通过以下方式激活：
 
 ```
-/repo-manager
-/repo-manager 添加新技能
-/repo-manager 同步所有技能
-/repo-manager 更新README
+/repo-manager-skill
+/repo-manager-skill 添加新技能
+/repo-manager-skill 同步所有技能
+/repo-manager-skill 更新README
+/repo-manager-skill 查看状态
 添加技能到仓库
 同步已安装的技能
 更新仓库README
@@ -41,11 +41,25 @@ metadata:
 从 `~/.claude/skills/` 复制技能到仓库，或在仓库中创建新技能。
 
 **操作流程**：
-1. 确认技能来源（已安装 / 新建）
-2. 复制或创建技能目录到 `d:\hsj\Github\skill-master\`
-3. 验证 SKILL.md 存在且格式正确
-4. 自动更新 README.md 的技能总览表格和技能详情
-5. 自动更新 README.md 的项目结构
+
+1. 自动扫描 `~/.claude/skills/` 和 `d:\hsj\Github\skill-master\`，找出已安装但未入库的技能
+2. 如果有多个未入库技能，使用 **AskUserQuestion** 让用户选择要添加哪一个（multiSelect: true）
+3. 如果只有一个未入库技能，直接确认添加
+4. 如果没有未入库技能，提示用户可以新建技能
+5. 用户选择后，复制技能目录到 `d:\hsj\Github\skill-master\`
+6. 验证 SKILL.md 存在且格式正确
+7. 自动更新 README.md 的技能总览表格和技能详情
+8. 自动更新 README.md 的项目结构
+
+**选择界面示例**：
+
+```
+检测到 3 个已安装但未入库的技能，选择要添加哪一个？
+
+○ blog-md-to-mdx-skill     — 博客 Markdown 转 MDX
+○ office-academic-skill    — 学术办公文档处理
+● scientific-toolkit-skill — 科学工具集
+```
 
 **触发词**：添加技能, add skill, 导入技能
 
@@ -54,6 +68,7 @@ metadata:
 将已安装的技能版本同步到仓库，或反向同步。
 
 **操作流程**：
+
 1. 比较 `~/.claude/skills/<name>` 与 `d:\hsj\Github\skill-master\<name>` 的差异
 2. 显示差异摘要（文件变更、版本号）
 3. 用户确认方向（仓库→已安装 / 已安装→仓库）
@@ -78,6 +93,7 @@ metadata:
 添加或更新非标准 Skill 的开源项目到"工具与资源"板块。
 
 **操作流程**：
+
 1. 获取项目信息（GitHub API / 用户提供）
 2. 添加到 README.md 的"工具与资源"表格
 3. 创建详情章节
@@ -89,6 +105,7 @@ metadata:
 列出仓库中所有技能的状态摘要。
 
 **输出**：
+
 - 技能名称、版本、作者
 - 文件完整性检查（SKILL.md、AGENTS.md、install.sh、README.md）
 - 与已安装版本的差异

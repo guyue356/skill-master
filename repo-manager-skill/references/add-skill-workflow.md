@@ -2,26 +2,65 @@
 
 ## 从已安装目录添加
 
-### 前置检查
+### 第一步：扫描差异
+
+自动扫描两个目录，找出差异：
+
+```bash
+# 列出已安装技能
+ls ~/.claude/skills/
+
+# 列出仓库技能
+ls d:\hsj\Github\skill-master\
+```
+
+对比后得到未入库列表（已安装 - 仓库）。
+
+### 第二步：让用户选择
+
+如果未入库技能数量 ≥ 2，使用 **AskUserQuestion** 工具：
+
+```json
+{
+  "questions": [{
+    "question": "检测到 N 个已安装但未入库的技能，选择要添加哪一个？",
+    "header": "选择技能",
+    "options": [
+      { "label": "skill-name-1", "description": "从 SKILL.md 提取的一句话简介" },
+      { "label": "skill-name-2", "description": "从 SKILL.md 提取的一句话简介" },
+      { "label": "skill-name-3", "description": "从 SKILL.md 提取的一句话简介" }
+    ],
+    "multiSelect": true
+  }]
+}
+```
+
+**规则**：
+- 每个选项的 `label` 是技能目录名
+- 每个选项的 `description` 从该技能 SKILL.md 的 `description` 字段提取
+- `multiSelect: true` 允许用户一次添加多个
+- 如果只有一个未入库技能，跳过选择直接添加
+
+### 第三步：前置检查
 
 1. 确认源目录存在：`~/.claude/skills/<skill-name>/`
 2. 确认目标不存在：`d:\hsj\Github\skill-master\<skill-name>/`
 3. 确认源目录包含 `SKILL.md`
 
-### 复制内容
+### 第四步：复制内容
 
 ```bash
 cp -R ~/.claude/skills/<skill-name> d:\hsj\Github\skill-master\<skill-name>
 ```
 
-### 验证清单
+### 第五步：验证清单
 
 - [ ] SKILL.md 存在且以 `# /skill-name` 开头
 - [ ] frontmatter 包含 `name` 和 `description`
 - [ ] 目录名与 SKILL.md 中的 `name` 一致
 - [ ] 无硬编码密钥或敏感信息
 
-### 更新 README.md
+### 第六步：更新 README.md
 
 1. 提取 SKILL.md 的 frontmatter 信息（name、version、author、license、description）
 2. 添加到技能总览表格
